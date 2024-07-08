@@ -1,4 +1,4 @@
-package main.java.com.revature.rba;
+package com.revature.rba;
 
 import java.util.Scanner;
 
