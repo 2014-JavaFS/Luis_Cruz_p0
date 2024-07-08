@@ -1,3 +1,5 @@
+package main.java.com.revature.rba;
+
 import java.util.Scanner;
 
 public class BankRunner {
