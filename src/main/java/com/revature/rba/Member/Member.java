@@ -10,6 +10,7 @@ public class Member {
 
     public enum MemberType{
         ADMIN,
+        BANKER,
         USER
         // add more types if needed
     }
