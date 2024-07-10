@@ -7,6 +7,7 @@ public class Account {
     private int memberId;
     private AccountType type;
     private String accountName;
+    private double amount;
 
 
     private enum AccountType {
@@ -16,17 +17,20 @@ public class Account {
         // Add more types of accounts if needed
     }
 
-    public Account(int routingNumber, int memberId,AccountType type){
+    public Account(int routingNumber, int memberId,AccountType type, double amount){
         this.routingNumber = routingNumber;
         this.memberId = memberId;
         this.type = type;
+        this.amount = amount;
         this.accountName = type.toString();
     }
 
     // polymorphism - overloading
-    public Account(int routingNumber, int memberId, AccountType type, String accountName){
+    public Account(int routingNumber, int memberId, AccountType type, double amount, String accountName){
         this.routingNumber = routingNumber;
-        this.type = this.type;
+        this.memberId = memberId;
+        this.type = type;
+        this.amount = amount;
         this.accountName = accountName;
     }
 
@@ -40,6 +44,10 @@ public class Account {
 
     public AccountType getType() {
         return type;
+    }
+
+    public double getAmount() {
+        return amount;
     }
 
     public String getAccountName() {
@@ -56,6 +64,10 @@ public class Account {
 
     public void setType(AccountType type) {
         this.type = type;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
     }
 
     public void setAccountName(String accountName) {
