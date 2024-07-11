@@ -33,6 +33,8 @@ public class BankRunner {
 
             if(!scanner.hasNextInt()){
                 System.out.println("Invalid input! Please select an option 1-3");
+                scanner.nextLine();
+                continue;
             }
 
             input = scanner.nextInt();
@@ -80,6 +82,7 @@ public class BankRunner {
 
             if(!scanner.hasNextInt()){
                 System.out.println("Invalid input! Please select an option 1-7");
+                scanner.nextLine();
                 continue; // GOTO start of loop
             }
 
