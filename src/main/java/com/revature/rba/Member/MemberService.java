@@ -1,4 +1,25 @@
 package com.revature.rba.Member;
 
-public class MemberService {
+import com.revature.rba.util.exceptions.DataNotFoundException;
+import com.revature.rba.util.interfaces.Serviceable;
+
+import java.util.List;
+
+public class MemberService implements Serviceable<Member> {
+    private MemberRepository memberRepository;
+
+    public MemberService(MemberRepository memberRepository){
+        this.memberRepository = memberRepository;
+    }
+
+    @Override
+    public List<Member> findAll(){
+        List<Member> members = memberRepository.findAll();
+        if(members == null){
+            throw new DataNotFoundException("No member information available");
+        }
+        else{
+            return members;
+        }
+    }
 }

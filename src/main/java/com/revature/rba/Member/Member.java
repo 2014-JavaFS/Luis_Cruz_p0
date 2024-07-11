@@ -15,6 +15,10 @@ public class Member {
         // add more types if needed
     }
 
+    public Member(){
+
+    }
+
     public Member(int id, String firstName, String lastName, String email,
                        String password, MemberType type){
         this.memberId = id;
