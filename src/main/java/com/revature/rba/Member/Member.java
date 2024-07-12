@@ -6,7 +6,7 @@ public class Member {
     private String lastName;
     private String email;
     private String password;
-    private MemberType type;
+    private MemberType memberType;
 
     public enum MemberType{
         ADMIN,
@@ -26,7 +26,7 @@ public class Member {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-        this.type = type;
+        this.memberType = type;
     }
 
     public int getMemberId() {
@@ -50,7 +50,7 @@ public class Member {
     }
 
     public String getType() {
-        return type.toString();
+        return memberType.toString();
     }
 
     public void setMemberId(int memberId) {
@@ -74,7 +74,7 @@ public class Member {
     }
 
     public void setType(MemberType type) {
-        this.type = type;
+        this.memberType = type;
     }
 
     @Override
@@ -84,7 +84,7 @@ public class Member {
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
-                ", type=" + type +
+                ", type=" + memberType +
                 '}';
     }
 }
