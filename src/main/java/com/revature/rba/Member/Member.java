@@ -15,6 +15,10 @@ public class Member {
         // add more types if needed
     }
 
+    public Member(){
+
+    }
+
     public Member(int id, String firstName, String lastName, String email,
                        String password, MemberType type){
         this.memberId = id;
@@ -45,8 +49,8 @@ public class Member {
         return password;
     }
 
-    public MemberType getType() {
-        return type;
+    public String getType() {
+        return type.toString();
     }
 
     public void setMemberId(int memberId) {
