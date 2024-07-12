@@ -4,6 +4,7 @@ import com.revature.rba.Member.Member;
 import com.revature.rba.Member.MemberController;
 import com.revature.rba.Member.MemberRepository;
 import com.revature.rba.Member.MemberService;
+import io.javalin.Javalin;
 
 import javax.sound.midi.MetaMessage;
 import java.util.Scanner;
@@ -18,6 +19,11 @@ public class BankRunner {
                     (i.e. email and password, or username and password)
                 -Additionally there could be another option to create an account
          */
+
+        var app = Javalin.create(/*config*/)
+                .get("/", ctx -> ctx.result("Hello, root!"))
+                .start(7070);
+
         Scanner scanner = new Scanner(System.in);
         int input = 0;
         MemberRepository memberRepository = new MemberRepository();
@@ -44,7 +50,7 @@ public class BankRunner {
                 case 1:
                     if(memberController.login() != null){
                         System.out.println("Successfully logged in!");
-                        showUserActions(scanner);
+                        showUserActions(scanner, memberController);
                     }
                     else{
                         System.out.println("That information does not match our records. Please make sure you are inputting your email/password correctly and try again.");
@@ -64,11 +70,11 @@ public class BankRunner {
         System.out.println("\nThank you for using our services! Have a wonderful day!");
     }
 
-    public static void showUserActions(Scanner scanner){
+    public static void showUserActions(Scanner scanner, MemberController memberController){
         int input = 0;
         do {
             // Menu
-            System.out.println("Please select an option below!");
+            System.out.println("Hello, " + memberController.getCurrentUser().getFirstName() + "! Please select an option below.");
             System.out.println("1. Deposit");
             System.out.println("2. Withdraw");
             System.out.println("3. View Balance");

@@ -49,8 +49,8 @@ public class Member {
         return password;
     }
 
-    public MemberType getType() {
-        return type;
+    public String getType() {
+        return type.toString();
     }
 
     public void setMemberId(int memberId) {

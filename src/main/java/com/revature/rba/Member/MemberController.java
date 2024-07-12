@@ -38,6 +38,10 @@ public class MemberController {
         return null;
     }
 
+    public Member getCurrentUser(){
+        return this.member;
+    }
+
 
 
 

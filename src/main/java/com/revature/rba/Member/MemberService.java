@@ -35,7 +35,7 @@ public class MemberService implements Serviceable<Member> {
         if(member == null){
             throw new DataNotFoundException("The credentials do not match what's on file");
         }
-        else{
+        else {
             return member;
         }
     }

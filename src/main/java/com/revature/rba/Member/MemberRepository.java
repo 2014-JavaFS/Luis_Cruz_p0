@@ -65,14 +65,14 @@ public class MemberRepository implements Crudable<Member> {
         try (Connection conn = ConnectionFactory.getConnectionFactory().getConnection()) {
             Member member = new Member();
 
-            String sql = "select * from members where email=?, password=?";
+            String sql = "select * from members where email=? and password=?";
 
             PreparedStatement ps = conn.prepareStatement(sql);
 
             ps.setString(1, email);
             ps.setString(2, password);
 
-            ResultSet rs = conn.createStatement().executeQuery(sql);
+            ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
                 member = generateMemberFromResult(rs);
