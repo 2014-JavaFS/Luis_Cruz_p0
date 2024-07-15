@@ -6,6 +6,7 @@ package com.revature.rba.Member;
 
 import com.revature.rba.util.ConnectionFactory;
 import com.revature.rba.util.interfaces.Crudable;
+import com.revature.rba.util.interfaces.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -21,21 +22,11 @@ public class MemberRepository implements Crudable<Member> {
         try (Connection conn = ConnectionFactory.getConnectionFactory().getConnection()){
             List<Member> members = new ArrayList<>();
 
-            String sql = "select * from flights";
+            String sql = "select * from members";
             ResultSet rs = conn.createStatement().executeQuery(sql);
 
             while(rs.next()){
-                Member member = new Member();
-
-                if(members.isEmpty()) {
-                    member.setMemberId(rs.getInt("user_id"));
-                    member.setEmail(rs.getString("email"));
-                    member.setPassword(rs.getString("password"));
-                    member.setType(Member.MemberType.valueOf(rs.getString("member_type")));
-                }
-                else{
-                    members.add(member);
-                }
+                members.add(generateFromResult(rs));
             }
 
             return members;
@@ -75,7 +66,7 @@ public class MemberRepository implements Crudable<Member> {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                member = generateMemberFromResult(rs);
+                member = generateFromResult(rs);
             }
             return member;
         } catch (SQLException e) {
@@ -84,8 +75,7 @@ public class MemberRepository implements Crudable<Member> {
         }
 
     }
-
-    private Member generateMemberFromResult(ResultSet rs) throws SQLException{
+    public static Member generateFromResult(ResultSet rs) throws SQLException{
         Member member = new Member();
 
         member.setMemberId(rs.getInt("user_id"));

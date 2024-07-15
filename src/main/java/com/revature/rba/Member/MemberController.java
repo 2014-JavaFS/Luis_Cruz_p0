@@ -1,47 +1,30 @@
 package com.revature.rba.Member;
 
 import com.revature.rba.util.exceptions.DataNotFoundException;
+import com.revature.rba.util.interfaces.Controller;
+import io.javalin.Javalin;
+import io.javalin.http.Context;
 
-import java.sql.SQLException;
-import java.util.Scanner;
+import java.util.List;
 
-public class MemberController {
-    public Scanner scanner;
+
+public class MemberController implements Controller {
     private final MemberService memberService;
-    private Member member;
 
-    public MemberController(Scanner scanner, MemberService memberService){
-        this.scanner = scanner;
+    public MemberController(MemberService memberService){
         this.memberService = memberService;
     }
 
-    public Member login(){
-        System.out.println("Please input your email");
-        String email = scanner.next();
-        System.out.println("Please input your password");
-        String pass = scanner.next();
-
-        try{
-            this.member = memberService.findUsingCredentials(email, pass);
-        } catch (DataNotFoundException e){
-            return null;
-        }
-
-        return this.member;
+    @Override
+    public void registerPaths(Javalin app){
+        app.get("/members", this::getAllMembers);
     }
 
-    public Member createNewUser(){
-        return null;
+    private List<Member> getAllMembers(Context ctx){
+        List<Member> members = memberService.findAll();
+        ctx.json(members);
+        return members;
     }
-
-    public Member updateUserInfo(){
-        return null;
-    }
-
-    public Member getCurrentUser(){
-        return this.member;
-    }
-
 
 
 
