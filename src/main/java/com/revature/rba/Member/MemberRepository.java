@@ -6,6 +6,7 @@ package com.revature.rba.Member;
 
 import com.revature.rba.util.ConnectionFactory;
 import com.revature.rba.util.interfaces.Crudable;
+import com.revature.rba.util.interfaces.Repository;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class MemberRepository implements Crudable<Member> {
             ResultSet rs = conn.createStatement().executeQuery(sql);
 
             while(rs.next()){
-                members.add(generateMemberFromResult(rs));
+                members.add(generateFromResult(rs));
             }
 
             return members;
@@ -65,7 +66,7 @@ public class MemberRepository implements Crudable<Member> {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                member = generateMemberFromResult(rs);
+                member = generateFromResult(rs);
             }
             return member;
         } catch (SQLException e) {
@@ -74,8 +75,7 @@ public class MemberRepository implements Crudable<Member> {
         }
 
     }
-
-    private Member generateMemberFromResult(ResultSet rs) throws SQLException{
+    public static Member generateFromResult(ResultSet rs) throws SQLException{
         Member member = new Member();
 
         member.setMemberId(rs.getInt("user_id"));

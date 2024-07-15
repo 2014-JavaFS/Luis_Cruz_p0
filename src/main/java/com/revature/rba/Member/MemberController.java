@@ -10,7 +10,6 @@ import java.util.List;
 
 public class MemberController implements Controller {
     private final MemberService memberService;
-    private Member member;
 
     public MemberController(MemberService memberService){
         this.memberService = memberService;

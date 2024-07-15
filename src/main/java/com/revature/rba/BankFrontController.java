@@ -3,19 +3,14 @@ package com.revature.rba;
 import com.revature.rba.Member.MemberController;
 import com.revature.rba.Member.MemberRepository;
 import com.revature.rba.Member.MemberService;
+import com.revature.rba.util.auth.AuthController;
+import com.revature.rba.util.auth.AuthRepository;
+import com.revature.rba.util.auth.AuthService;
 import io.javalin.Javalin;
+import org.slf4j.LoggerFactory;
 
 public class BankFrontController {
     public static void main(String[] args){
-        // TODO: Plan out the banking system and the classes we'll need to instantiate our objects.
-        /*
-            Plan:
-                -Users will have accounts or references to accounts.
-                -Before menu is shown, User will be prompted to sign in using some credentials
-                    (i.e. email and password, or username and password)
-                -Additionally there could be another option to create an account
-         */
-
         var app = Javalin.create().start();
 
         // Member
@@ -28,6 +23,10 @@ public class BankFrontController {
         // Account
 
         // Auth
+        AuthRepository authRepository = new AuthRepository();
+        AuthService authService = new AuthService(authRepository);
+        AuthController authController = new AuthController(authService);
 
+        authController.registerPaths(app);
     }
 }
