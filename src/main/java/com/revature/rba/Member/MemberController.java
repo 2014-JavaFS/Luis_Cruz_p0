@@ -24,6 +24,7 @@ public class MemberController implements Controller {
         app.get("/members/{memberId}", this::getMemberById);
         app.post("/members", this::postMember);
         app.put("/members/{memberId}", this::putUpdateMember);
+        app.delete("/members/{memberId}", this::deleteMemberById);
     }
 
     private List<Member> getAllMembers(Context ctx){
@@ -59,6 +60,12 @@ public class MemberController implements Controller {
         String memberType = ctx.header("memberType");
 
         Member member = ctx.bodyAsClass(Member.class);
+
+        if(member.getType().equals("ADMIN") && memberType != null && !memberType.equals("ADMIN")){
+            ctx.status(403);
+            ctx.result("An admin account must be updated by an admin. Please log into your admin account to change your information.");
+        }
+
         int id = Integer.parseInt(ctx.pathParam("memberId"));
 
         if(memberType == null || memberType.equals("USER")){
@@ -82,9 +89,11 @@ public class MemberController implements Controller {
     private void getMemberById(Context ctx){
         int id = Integer.parseInt(ctx.pathParam("memberId"));
         String memberType = ctx.header("memberType");
+        int memberId = Integer.parseInt(ctx.header("memberId"));
 
-        if(memberType == null || memberType.equals("USER")){
+        if(memberType == null || memberType.equals("USER") && memberId != id){
             ctx.status(HttpStatus.FORBIDDEN);
+            ctx.result("You do not have permission to ");
             return;
         }
 
@@ -96,6 +105,13 @@ public class MemberController implements Controller {
         }catch (RuntimeException e){
             ctx.status(500);
         }
+    }
+
+    private void deleteMemberById(Context ctx){
+        int id = Integer.parseInt(ctx.pathParam("memberId"));
+        String memberType = ctx.header("memberType");
+
+
     }
 
 
