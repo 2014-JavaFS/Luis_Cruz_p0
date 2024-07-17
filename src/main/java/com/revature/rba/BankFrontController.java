@@ -1,5 +1,8 @@
 package com.revature.rba;
 
+import com.revature.rba.Account.AccountController;
+import com.revature.rba.Account.AccountRepository;
+import com.revature.rba.Account.AccountService;
 import com.revature.rba.Member.MemberController;
 import com.revature.rba.Member.MemberRepository;
 import com.revature.rba.Member.MemberService;
@@ -21,6 +24,11 @@ public class BankFrontController {
         memberController.registerPaths(app);
 
         // Account
+        AccountRepository accountRepository = new AccountRepository();
+        AccountService accountService = new AccountService(accountRepository);
+        AccountController accountController = new AccountController(accountService);
+
+        accountController.registerPaths(app);
 
         // Auth
         AuthRepository authRepository = new AuthRepository();

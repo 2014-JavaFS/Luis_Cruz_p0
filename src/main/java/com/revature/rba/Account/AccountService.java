@@ -6,7 +6,11 @@ import com.revature.rba.util.interfaces.Serviceable;
 import java.util.List;
 
 public class AccountService implements Serviceable<Account> {
-    AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
+
+    public AccountService(AccountRepository accountRepository){
+        this.accountRepository = accountRepository;
+    }
 
     @Override
     public List<Account> findAll(){
@@ -20,7 +24,7 @@ public class AccountService implements Serviceable<Account> {
     }
 
     @Override
-    public Account create(){
+    public Account create(Account createAccount){
         return null;
     }
 }

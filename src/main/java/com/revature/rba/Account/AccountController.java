@@ -7,7 +7,11 @@ import io.javalin.http.Context;
 import java.util.List;
 
 public class AccountController implements Controller {
-    AccountService accountService;
+    private final AccountService accountService;
+
+    public AccountController(AccountService accountService){
+        this.accountService = accountService;
+    }
 
     @Override
     public void registerPaths(Javalin app){

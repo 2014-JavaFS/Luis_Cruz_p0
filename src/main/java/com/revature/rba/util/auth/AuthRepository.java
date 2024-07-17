@@ -27,7 +27,7 @@ public class AuthRepository implements Repository<Member> {
             ResultSet rs = ps.executeQuery();
 
             while(rs.next()){
-                member = MemberRepository.generateFromResult(rs);
+                member = generateFromResult(rs);
             }
             return member;
 
@@ -52,8 +52,15 @@ public class AuthRepository implements Repository<Member> {
     }
 
     @Override
-    public boolean update(Object updatedObject) {
-        return false;
+    public boolean update(Member updatedObject) {
+        try (Connection conn = ConnectionFactory.getConnectionFactory().getConnection()){
+            String sql = "";
+
+            return true;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
@@ -67,7 +74,7 @@ public class AuthRepository implements Repository<Member> {
     }
 
     @Override
-    public Object create() {
+    public Member create(Member O) {
         return null;
     }
 }

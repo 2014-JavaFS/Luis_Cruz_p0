@@ -4,5 +4,5 @@ import java.util.List;
 
 public interface Serviceable <O>{
     List<O> findAll();
-    O create();
+    O create(O object);
 }
