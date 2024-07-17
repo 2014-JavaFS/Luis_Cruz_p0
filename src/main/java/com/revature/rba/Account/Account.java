@@ -10,7 +10,7 @@ public class Account {
     private double amount;
 
 
-    private enum AccountType {
+    enum AccountType {
         CHECKING,
         SAVINGS,
         JOINT,
@@ -23,6 +23,10 @@ public class Account {
         this.type = type;
         this.amount = amount;
         this.accountName = type.toString();
+    }
+
+    public Account(){
+
     }
 
     // polymorphism - overloading

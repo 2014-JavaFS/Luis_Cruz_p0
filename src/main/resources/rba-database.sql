@@ -40,11 +40,23 @@ create table accounts(
 	amount decimal(10, 2) default 0.00
 );
 
+insert into accounts
+	values(987654321, 2, default, 'My account', .02);
+
 alter table accounts 
 	add constraint fk_user_id foreign key (user_id) 
 	references members(user_id);
+
+update accounts set account_name='Savings', account_type='SAVINGS'
+	where routing_number='987654321';
 
 insert into accounts
 	values(123456789, 2, default, 'My checking account', default);
 
 select * from accounts;
+
+-- JOINS and Aliases
+select a.*, m.first_name, m.last_name
+from accounts a
+inner join members m on a.user_id = m.user_id
+where m.user_id = 2;

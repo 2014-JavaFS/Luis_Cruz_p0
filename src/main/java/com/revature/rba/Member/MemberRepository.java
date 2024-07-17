@@ -5,6 +5,7 @@ package com.revature.rba.Member;
  */
 
 import com.revature.rba.util.ConnectionFactory;
+import com.revature.rba.util.exceptions.DataNotFoundException;
 import com.revature.rba.util.interfaces.Crudable;
 import com.revature.rba.util.interfaces.Repository;
 
@@ -12,11 +13,12 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MemberRepository implements Crudable<Member> {
+public class MemberRepository implements Repository<Member> {
 
     public MemberRepository(){
 
     }
+
     @Override
     public List<Member> findAll() {
         try (Connection conn = ConnectionFactory.getConnectionFactory().getConnection()){
@@ -37,8 +39,26 @@ public class MemberRepository implements Crudable<Member> {
     }
 
     @Override
-    public boolean update(Member updatedMember){
-        return false;
+    public boolean update(Member updatedMember, int id){
+        try (Connection conn = ConnectionFactory.getConnectionFactory().getConnection()){
+            String sql = "update members set first_name=?, last_name=? where user_id=?";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setString(1, updatedMember.getFirstName());
+            ps.setString(2, updatedMember.getLastName());
+            ps.setInt(3, id);
+
+            int execute = ps.executeUpdate();
+            if(execute == 0){
+                throw new RuntimeException("Failed to update.");
+            }
+
+            return true;
+        } catch(SQLException | RuntimeException e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
@@ -47,8 +67,31 @@ public class MemberRepository implements Crudable<Member> {
     }
 
     @Override
-    public Member create(){
-        return null;
+    public Member create(Member createMember){
+        try(Connection conn = ConnectionFactory.getConnectionFactory().getConnection()){
+
+            String sql = "insert into members(first_name, last_name, email, password) values(?, ?, ?, ?)";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+
+            ps.setString(1, createMember.getFirstName());
+            ps.setString(2, createMember.getLastName());
+            ps.setString(3, createMember.getEmail());
+            ps.setString(4, createMember.getPassword());
+
+            int execute = ps.executeUpdate();
+
+            if(execute == 0){
+                throw new RuntimeException("Failed to insert into database");
+            }
+
+            return createMember;
+
+        } catch (SQLException | RuntimeException e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
 
@@ -68,6 +111,7 @@ public class MemberRepository implements Crudable<Member> {
             while (rs.next()) {
                 member = generateFromResult(rs);
             }
+
             return member;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -75,7 +119,9 @@ public class MemberRepository implements Crudable<Member> {
         }
 
     }
-    public static Member generateFromResult(ResultSet rs) throws SQLException{
+
+    @Override
+    public Member generateFromResult(ResultSet rs) throws SQLException{
         Member member = new Member();
 
         member.setMemberId(rs.getInt("user_id"));
@@ -86,6 +132,30 @@ public class MemberRepository implements Crudable<Member> {
         member.setType(Member.MemberType.valueOf(rs.getString("member_type")));
 
         return member;
+    }
+
+    @Override
+    public Member findById(int id){
+        try (Connection conn = ConnectionFactory.getConnectionFactory().getConnection()){
+            Member member = new Member();
+            String sql = "select * from members where user_id=?";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setInt(1, id);
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()){
+                member = generateFromResult(rs);
+            }
+
+            return member;
+
+        }catch (SQLException e){
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }

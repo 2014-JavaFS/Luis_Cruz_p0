@@ -50,7 +50,10 @@ public class Member {
     }
 
     public String getType() {
-        return memberType.toString();
+        if(this.memberType == null){
+            return null;
+        }
+        return this.memberType.toString();
     }
 
     public void setMemberId(int memberId) {

@@ -1,12 +1,17 @@
 package com.revature.rba.Account;
 
 import com.revature.rba.util.exceptions.DataNotFoundException;
+import com.revature.rba.util.exceptions.InvalidInputException;
 import com.revature.rba.util.interfaces.Serviceable;
 
 import java.util.List;
 
 public class AccountService implements Serviceable<Account> {
-    AccountRepository accountRepository;
+    private final AccountRepository accountRepository;
+
+    public AccountService(AccountRepository accountRepository){
+        this.accountRepository = accountRepository;
+    }
 
     @Override
     public List<Account> findAll(){
@@ -20,7 +25,11 @@ public class AccountService implements Serviceable<Account> {
     }
 
     @Override
-    public Account create(){
-        return null;
+    public Account create(Account account){
+        Account accountCreated = accountRepository.create(account);
+        if(accountCreated == null){
+            throw new DataNotFoundException("Something went wrong. No account information was found");
+        }
+        return account;
     }
 }

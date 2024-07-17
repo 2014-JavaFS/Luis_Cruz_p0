@@ -1,6 +1,7 @@
 package com.revature.rba.Member;
 
 import com.revature.rba.util.exceptions.DataNotFoundException;
+import com.revature.rba.util.exceptions.InvalidInputException;
 import com.revature.rba.util.interfaces.Serviceable;
 
 import java.sql.SQLException;
@@ -25,8 +26,8 @@ public class MemberService implements Serviceable<Member> {
     }
 
     @Override
-    public Member create() {
-        return null;
+    public Member create(Member createMember) {
+        return memberRepository.create(createMember);
     }
 
     public Member findUsingCredentials(String email, String password){
@@ -38,5 +39,31 @@ public class MemberService implements Serviceable<Member> {
         else {
             return member;
         }
+    }
+
+    public boolean updateMember(Member member, int id){
+
+        return memberRepository.update(member, id);
+    }
+
+    private void validateAllInfo(Member member){
+
+        if(member.getFirstName() == null){
+            throw new InvalidInputException("First name must not be null");
+        }
+
+        if(!member.getEmail().contains("@") || !member.getEmail().contains(".") || member.getEmail() == null){
+            throw new InvalidInputException("Email must not be null and must be valid");
+        }
+
+        if(member.getPassword() == null || !member.getPassword().matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$")){
+            throw new InvalidInputException("Password must not be null, must contain at least 1 number, 1 lower case, 1 upper case, have a special character (@#$%^&+=), contain no whitespace, and be 8 characters.");
+        }
+    }
+
+    public Member getMemberById(int id){
+        Member member = memberRepository.findById(id);
+
+        return member;
     }
 }

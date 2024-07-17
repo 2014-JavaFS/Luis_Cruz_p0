@@ -25,6 +25,9 @@ public class AuthController implements Controller {
 
         try{
             Member member = authService.login(email, pass);
+            ctx.header("memberId", String.valueOf(member.getMemberId()));
+            ctx.header("memberType", member.getType());
+            ctx.json(member);
             ctx.status(200);
 
         }catch (AuthenticationException e){
