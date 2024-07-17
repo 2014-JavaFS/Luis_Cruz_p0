@@ -4,6 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public interface Crudable<O> extends Serviceable<O>{
-    public boolean update(O updatedObject);
+    public boolean update(O updatedObject, int id);
     boolean delete();
 }

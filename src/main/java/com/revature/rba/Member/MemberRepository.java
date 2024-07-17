@@ -39,7 +39,7 @@ public class MemberRepository implements Repository<Member> {
     }
 
     @Override
-    public boolean update(Member updatedMember){
+    public boolean update(Member updatedMember, int id){
         try (Connection conn = ConnectionFactory.getConnectionFactory().getConnection()){
             String sql = "update members set first_name=?, last_name=? where user_id=?";
 
@@ -47,6 +47,7 @@ public class MemberRepository implements Repository<Member> {
 
             ps.setString(1, updatedMember.getFirstName());
             ps.setString(2, updatedMember.getLastName());
+            ps.setInt(3, id);
 
             int execute = ps.executeUpdate();
             if(execute == 0){

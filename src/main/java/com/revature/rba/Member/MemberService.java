@@ -41,9 +41,9 @@ public class MemberService implements Serviceable<Member> {
         }
     }
 
-    public boolean updateMember(Member member){
+    public boolean updateMember(Member member, int id){
 
-        return memberRepository.update(member);
+        return memberRepository.update(member, id);
     }
 
     private void validateAllInfo(Member member){
@@ -62,7 +62,8 @@ public class MemberService implements Serviceable<Member> {
     }
 
     public Member getMemberById(int id){
-        return memberRepository.findById(id);
+        Member member = memberRepository.findById(id);
 
+        return member;
     }
 }

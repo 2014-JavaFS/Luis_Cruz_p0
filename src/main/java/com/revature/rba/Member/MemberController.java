@@ -7,6 +7,7 @@ import io.javalin.Javalin;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 
+import javax.xml.crypto.Data;
 import java.util.List;
 
 
@@ -22,7 +23,7 @@ public class MemberController implements Controller {
         app.get("/members", this::getAllMembers);
         app.get("/members/{memberId}", this::getMemberById);
         app.post("/members", this::postMember);
-        app.put("members", this::putUpdateMember);
+        app.put("/members/{memberId}", this::putUpdateMember);
     }
 
     private List<Member> getAllMembers(Context ctx){
@@ -58,6 +59,7 @@ public class MemberController implements Controller {
         String memberType = ctx.header("memberType");
 
         Member member = ctx.bodyAsClass(Member.class);
+        int id = Integer.parseInt(ctx.pathParam("memberId"));
 
         if(memberType == null || memberType.equals("USER")){
             ctx.status(403);
@@ -65,7 +67,7 @@ public class MemberController implements Controller {
             return;
         }
         try{
-            if(memberService.updateMember(member)){
+            if(memberService.updateMember(member, id)){
                 ctx.status(HttpStatus.ACCEPTED);
             }
             else{
@@ -78,13 +80,22 @@ public class MemberController implements Controller {
     }
 
     private void getMemberById(Context ctx){
-        int id = Integer.parseInt(ctx.queryParam("memberId"));
+        int id = Integer.parseInt(ctx.pathParam("memberId"));
+        String memberType = ctx.header("memberType");
 
-        if(memberService.getMemberById(id) == null){
-            throw new DataNotFoundException("That user could not be found");
+        if(memberType == null || memberType.equals("USER")){
+            ctx.status(HttpStatus.FORBIDDEN);
+            return;
         }
 
-        ctx.json(memberService.getMemberById(id));
+        try{
+            Member foundMember = memberService.getMemberById(id);
+            ctx.json(foundMember);
+        }catch (DataNotFoundException e){
+            ctx.status(HttpStatus.NOT_FOUND);
+        }catch (RuntimeException e){
+            ctx.status(500);
+        }
     }
 
 

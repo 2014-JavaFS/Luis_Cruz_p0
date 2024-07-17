@@ -52,7 +52,7 @@ public class AuthRepository implements Repository<Member> {
     }
 
     @Override
-    public boolean update(Member updatedObject) {
+    public boolean update(Member updatedObject, int id) {
         try (Connection conn = ConnectionFactory.getConnectionFactory().getConnection()){
             String sql = "";
 
@@ -75,6 +75,11 @@ public class AuthRepository implements Repository<Member> {
 
     @Override
     public Member create(Member O) {
+        return null;
+    }
+
+    @Override
+    public Member findById(int id){
         return null;
     }
 }
