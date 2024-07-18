@@ -4,6 +4,10 @@
 This application is meant to assist members of a bank control their funds by depositing and withdrawing from their account(s).
 It utilizes a database that will be stored locally using PostgreSQL.
 
+### ERD (ENTITY RELATIONAL DATA)
+
+![ERD Diagram of the relationship between members and accounts](src/main/resources/ERDmembers-accounts.png)
+
 ## User Stories
 
 As a user, I can:
