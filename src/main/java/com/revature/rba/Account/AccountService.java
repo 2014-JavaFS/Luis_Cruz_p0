@@ -30,6 +30,29 @@ public class AccountService implements Serviceable<Account> {
         if(accountCreated == null){
             throw new DataNotFoundException("Something went wrong. No account information was found");
         }
-        return account;
+        return accountCreated;
+    }
+
+    public boolean deposit(Account account){
+        return accountRepository.deposit(account);
+    }
+
+    public boolean withdraw(Account account){
+        return accountRepository.withdraw(account);
+    }
+
+    public List<Account> findFor(int id){
+        if(accountRepository.findAccountsFor(id) == null){
+            throw new DataNotFoundException("Unable to find that information");
+        }
+        return accountRepository.findAccountsFor(id);
+    }
+
+    public Account findAccountInfo(int routing){
+        if(accountRepository.findById(routing) == null){
+            throw new DataNotFoundException("Unable to find that information.");
+        }
+
+        return accountRepository.findById(routing);
     }
 }
