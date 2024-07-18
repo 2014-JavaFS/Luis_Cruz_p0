@@ -11,16 +11,16 @@ As a user, I can:
 -   [x] register a new user account with the system (must be secured with a password)
 -   [x] login with my existing credentials
 -   [x] create at least one account
--   [ ] deposit funds into an account (use doubles, not ints)
--   [ ] withdraw funds from an account (no overdrafting!)
--   [ ] view the balance of my account(s) (all balance displays must be in proper currency format)
+-   [x] deposit funds into an account (use doubles, not ints)
+-   [x] withdraw funds from an account (no overdrafting!)
+-   [x] view the balance of my account(s) (all balance displays must be in proper currency format)
 
 ### Suggested Bonus User Stories
 
 As a user I can:
 
 -   [ ] view the transaction history for an account
--   [ ] create multiple accounts per user (checking, savings, etc.)
+-   [x] create multiple accounts per user (checking, savings, etc.)
 -   [ ] share a joint account with another user
 -   [ ] transfer money between accounts
 
