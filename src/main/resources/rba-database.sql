@@ -40,11 +40,14 @@ create table accounts(
 	amount decimal(10, 2) default 0.00
 );
 
+<<<<<<< Updated upstream
 insert into accounts
 	values(987654321, 2, default, 'My account', .02);
 
-alter table accounts 
-	add constraint fk_user_id foreign key (user_id) 
+
+alter table accounts
+	add constraint fk_user_id foreign key (user_id)
+
 	references members(user_id);
 
 update accounts set account_name='Savings', account_type='SAVINGS'
