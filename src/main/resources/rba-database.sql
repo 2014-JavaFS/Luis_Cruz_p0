@@ -40,7 +40,7 @@ create table accounts(
 	amount decimal(10, 2) default 0.00
 );
 
-<<<<<<< Updated upstream
+
 insert into accounts
 	values(987654321, 2, default, 'My account', .02);
 

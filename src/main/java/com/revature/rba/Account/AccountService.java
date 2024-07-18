@@ -42,10 +42,11 @@ public class AccountService implements Serviceable<Account> {
     }
 
     public List<Account> findFor(int id){
-        if(accountRepository.findAccountsFor(id) == null){
+        List<Account> accounts = accountRepository.findAccountsFor(id);
+        if(accounts == null){
             throw new DataNotFoundException("Unable to find that information");
         }
-        return accountRepository.findAccountsFor(id);
+        return accounts;
     }
 
     public Account findAccountInfo(int routing){

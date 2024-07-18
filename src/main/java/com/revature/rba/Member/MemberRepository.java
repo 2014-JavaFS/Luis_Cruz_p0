@@ -6,6 +6,7 @@ package com.revature.rba.Member;
 
 import com.revature.rba.util.ConnectionFactory;
 import com.revature.rba.util.exceptions.DataNotFoundException;
+import com.revature.rba.util.exceptions.InvalidInputException;
 import com.revature.rba.util.interfaces.Crudable;
 import com.revature.rba.util.interfaces.Repository;
 
@@ -39,15 +40,17 @@ public class MemberRepository implements Repository<Member> {
     }
 
     @Override
-    public boolean update(Member updatedMember, int id){
+    public boolean update(Member updatedMember){
         try (Connection conn = ConnectionFactory.getConnectionFactory().getConnection()){
-            String sql = "update members set first_name=?, last_name=? where user_id=?";
+            String sql = "update members set first_name=?, last_name=?, email=?, password=? where user_id=?";
 
             PreparedStatement ps = conn.prepareStatement(sql);
 
             ps.setString(1, updatedMember.getFirstName());
             ps.setString(2, updatedMember.getLastName());
-            ps.setInt(3, id);
+            ps.setString(3, updatedMember.getEmail());
+            ps.setString(4, updatedMember.getPassword());
+            ps.setInt(5, updatedMember.getMemberId());
 
             int execute = ps.executeUpdate();
             if(execute == 0){
@@ -62,8 +65,27 @@ public class MemberRepository implements Repository<Member> {
     }
 
     @Override
-    public boolean delete(){
-        return false;
+    public boolean delete(int id){
+        try(Connection conn = ConnectionFactory.getConnectionFactory().getConnection()){
+            Member member = findById(id);
+
+            if(member.getType().equals("ADMIN")){
+                throw new InvalidInputException("Cannot delete admin accounts");
+            }
+
+            String sql = "delete from members where user_id=?";
+
+            PreparedStatement ps = conn.prepareStatement(sql);
+
+            ps.setInt(1, id);
+
+            int executed = ps.executeUpdate();
+
+            return executed != 0;
+        }catch (SQLException e){
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
