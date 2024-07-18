@@ -24,32 +24,40 @@ public class AccountController implements Controller {
         app.get("/accounts/view-account/{routingNumber}", this::getBalance);
     }
 
-    private List<Account> getAllAccounts(Context ctx){
+    private void getAllAccounts(Context ctx){
         String memberType = ctx.header("memberType");
 
         if(memberType == null || !memberType.equals("ADMIN")){
             ctx.status(403);
             ctx.result("You are not allowed to view all accounts.");
-            return null;
+            return;
         }
 
         List<Account> accounts = accountService.findAll();
         ctx.json(accounts);
-        return accounts;
     }
 
     private void postAccount(Context ctx){
         Account account = ctx.bodyAsClass(Account.class);
-        int memberId = Integer.parseInt(ctx.pathParam("memberId"));
+        int memberId = Integer.parseInt(ctx.header("memberId"));
         String memberType = ctx.header("memberType");
 
-        if(memberType == null || (memberId != account.getMemberId() && memberType.equals("USER"))){
+        if(memberType == null || memberId != account.getMemberId()){
             ctx.status(403);
             ctx.result("You cannot create this account.");
             return;
         }
 
-        accountService.create(account);
+        Account created = accountService.create(account);
+        if(created == null){
+            ctx.status(500);
+            ctx.result("Could not create account");
+            return;
+        }
+
+        ctx.status(200);
+        ctx.result("Successfully created account!");
+
     }
 
     private void putDeposit(Context ctx){
@@ -136,6 +144,15 @@ public class AccountController implements Controller {
             return;
         }
 
-        ctx.json(accountService.findFor(memberId));
+        List<Account> accounts = accountService.findFor(accessId);
+
+        if(accounts == null){
+            ctx.status(500);
+            ctx.result("Could not retrieve data");
+            return;
+        }
+
+        ctx.status(200);
+        ctx.json(accounts);
     }
 }

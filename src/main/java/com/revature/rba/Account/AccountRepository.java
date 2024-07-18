@@ -67,12 +67,12 @@ public class AccountRepository implements Repository<Account> {
     }
 
     @Override
-    public boolean update(Account updatedObject, int id) {
+    public boolean update(Account updatedObject) {
         return false;
     }
 
     @Override
-    public boolean delete() {
+    public boolean delete(int id) {
         return false;
     }
 
@@ -105,7 +105,7 @@ public class AccountRepository implements Repository<Account> {
 
     public boolean deposit(Account account){
         try(Connection conn = ConnectionFactory.getConnectionFactory().getConnection()){
-            String sql = "update accounts set amount=? where routing_number=?";
+            String sql = "update accounts set amount=? where routing_number=? and user_id=?";
 
             PreparedStatement ps = conn.prepareStatement(sql);
 
@@ -113,6 +113,7 @@ public class AccountRepository implements Repository<Account> {
 
             ps.setDouble(1, amount);
             ps.setInt(2, account.getRoutingNumber());
+            ps.setInt(3, account.getMemberId());
 
             int executed = ps.executeUpdate();
 
@@ -171,7 +172,7 @@ public class AccountRepository implements Repository<Account> {
 
     public List<Account> findAccountsFor(int id){
         try(Connection conn = ConnectionFactory.getConnectionFactory().getConnection()){
-            List<Account> account = new ArrayList<Account>();
+            List<Account> account = new ArrayList<>();
             String sql = "select * from accounts where user_id=?";
 
             PreparedStatement ps = conn.prepareStatement(sql);

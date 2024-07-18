@@ -52,7 +52,7 @@ public class AuthRepository implements Repository<Member> {
     }
 
     @Override
-    public boolean update(Member updatedObject, int id) {
+    public boolean update(Member updatedObject) {
         try (Connection conn = ConnectionFactory.getConnectionFactory().getConnection()){
             String sql = "";
 
@@ -64,7 +64,7 @@ public class AuthRepository implements Repository<Member> {
     }
 
     @Override
-    public boolean delete() {
+    public boolean delete(int id) {
         return false;
     }
 
